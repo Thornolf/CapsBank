@@ -6,14 +6,14 @@ Date::Date() {
   this->_day = 1;
   this->_month = 1;
   this->_year = 1969;
-  this->_literal = buildDate(this->_day, this->_month, this->_year);
+  this->_literal = buildDate(this->_year, this->_month, this->_day);
 }
 
-Date::Date(int newDay, int newMonth, int newYear) {
-  this->_day = newDay;
-  this->_month = newMonth;
+Date::Date(int newYear, int newMonth, int newDay) {
   this->_year = newYear;
-  this->_literal = buildDate(this->_day, this->_month, this->_year);
+  this->_month = newMonth;
+  this->_day = newDay;
+  this->_literal = buildDate(this->_year, this->_month, this->_day);
 }
 
 Date::Date(std::string newLiteral) {
@@ -54,29 +54,19 @@ void		Date::setLiteral(std::string newLiteral) {
 }
 
 void		Date::distributeIntegerDate(std::string newDate) {
-  this->_day = std::stoi(newDate.substr(0, newDate.find("-")));
-  this->_month = std::stoi(newDate.substr(4, newDate.find("-")));
-  this->_year = std::stoi(newDate.substr(6, newDate.find("-") + 2));
+  this->_year = std::stoi(newDate.substr(0, newDate.find("-") + 2));
+  this->_month = std::stoi(newDate.substr(6, newDate.find("-")));
+  this->_day = std::stoi(newDate.substr(4, newDate.find("-")));
 }
 
-std::string	Date::buildDate(int newDay, int newMonth, int newYear) {
+std::string	Date::buildDate(int newYear, int newMonth, int newDay) {
   std::string	literal_date = "";
   
-  if (newDay <= 9) {
-    literal_date += "0";
-    literal_date += std::to_string(newDay);
-  } else {
-    literal_date += std::to_string(newDay);
-  }
-  literal_date += "-";
-  if (newMonth <= 9) {
-    literal_date += "0";
-    literal_date += std::to_string(newMonth);
-  } else {
-    literal_date += std::to_string(newMonth);
-  }
-  literal_date += "-";
   literal_date += std::to_string(newYear);
+  literal_date += "-";
+  literal_date += std::to_string(newMonth);
+  literal_date += "-";
+  literal_date += std::to_string(newDay);
   return (literal_date);
 }
 
