@@ -18,6 +18,7 @@ Date::Date(int newDay, int newMonth, int newYear) {
 
 Date::Date(std::string newLiteral) {
   this->_literal = newLiteral;
+  distributeIntegerDate(newLiteral);
 }
 
 int		Date::getDay() const {
@@ -53,8 +54,9 @@ void		Date::setLiteral(std::string newLiteral) {
 }
 
 void		Date::distributeIntegerDate(std::string newDate) {
-  (void)newDate;
-  //TODO GO trough the string, before & after "-" to redistribute integer to _day, _mont and _year
+  this->_day = std::stoi(newDate.substr(0, newDate.find("-")));
+  this->_month = std::stoi(newDate.substr(4, newDate.find("-")));
+  this->_year = std::stoi(newDate.substr(6, newDate.find("-") + 2));
 }
 
 std::string	Date::buildDate(int newDay, int newMonth, int newYear) {
