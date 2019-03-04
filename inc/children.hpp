@@ -6,7 +6,7 @@
 class		Children : public Account {
  public:
   Children();
-  Children(int , Date *, std::string, std::string , float, Account *);
+  Children(int , Date *, std::string, std::string , float, Account *, e_type);
 
   float		getMonthlyLimit() const;
   float		getDailyLimit() const;

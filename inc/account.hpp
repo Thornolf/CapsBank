@@ -7,6 +7,12 @@
 #include		"date.hpp"
 #include		"record.hpp"
 
+enum			e_type {
+			classic = 0,
+			enfant = 1,
+			retraite = 2,
+};
+
 class			Account {
 private:
   int			_id;
@@ -17,16 +23,18 @@ private:
   
 protected:
   int			_balance;
+  e_type		_accountType;
   
 public:
   Account();
-  Account(int, Date *, std::string, std::string, float);
+  Account(int, Date *, std::string, std::string, float, e_type);
   int			getId() const;
   Date			*getBirthdate() const;
   std::string		getLastname() const;
   std::string		getFirstname() const;
   float			getBalance() const;
   std::list<Record*>	getHistory() const;
+  e_type		getType() const;
 
   void			setId(int);
   void			setBirthdate(Date*);
@@ -34,8 +42,9 @@ public:
   void			setFirstname(std::string);
   void			setBalance(float);
   void			setHistory(std::list<Record*>);
-  void			addRecordToHistory(Record*);
+  void			setType(e_type);
   
+  void			addRecordToHistory(Record*);
   void			deposit(float);
   virtual float		withdraw(float);
   void			dump() const;

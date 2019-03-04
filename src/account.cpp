@@ -9,14 +9,16 @@ Account::Account() {
   this->_lastname = "Menethil";
   this->_firstname = "Arthas";
   this->_balance = 999;
+  this->_accountType = e_type::classic;
 }
 
-Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, float newBalance) {
+Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, float newBalance, e_type newType) {
   this->_id = newId;
   this->_birthdate = newBirthdate;
   this->_lastname = newLastname;
   this->_firstname = newFirstname;
   this->_balance = newBalance;
+  this->_accountType = newType;
 }
 
 int		Account::getId() const {
@@ -43,6 +45,10 @@ std::list<Record*>Account::getHistory() const {
   return (this->_history);
 }
 
+e_type		Account::getType() const {
+  return (this->_accountType);
+}
+
 void		Account::setId(int newId) {
   this->_id = newId;
 }
@@ -67,6 +73,10 @@ void		Account::setHistory(std::list<Record*> newHistory) {
   this->_history = newHistory;
 }
 
+void		Account::setType(e_type newType) {
+  this->_accountType = newType;
+}
+
 void		Account::addRecordToHistory(Record *newRecord) {
   this->_history.push_back(newRecord);
 }
@@ -89,6 +99,7 @@ void		Account::dump() const {
   std::cout << " Birthdate : " << this->_birthdate->getLiteral();
   std::cout << " \"" << this->_lastname;
   std::cout << " " << this->_firstname;
+  std::cout << "  type: " << this->_accountType;
   std::cout << "\" Balance : " << this->_balance << std::endl;
 
   std::cout << "--- History ---" << std::endl;
