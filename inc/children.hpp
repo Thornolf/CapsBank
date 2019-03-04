@@ -3,14 +3,27 @@
 
 #include	"account.hpp"
 
-Class	Children : public Account {
+class		Children : public Account {
  public:
   Children();
+  Children(int , Date *, std::string, std::string , int, Account *);
+
+  int		getMonthlyLimit() const;
+  int		getDailyLimit() const;
+  int		getMonthlyWithdraw() const;
+  int		getDailyWithdraw() const;
+  Account	*getParent();
+  void		setMonthlyWithdraw(int);
+  void		setDailyWithdraw(int);
+  void		setParent(Account *);
+  
   int		withdraw(int);
   virtual ~Children();
  private:
-  int		_monthlyLimit = 50;
-  int		_actualMonthWithdraw;
+  int const	_monthlyLimit = 50;
+  int const	_dailyLimit = 10;
+  int		_monthlyWithdraw;
+  int		_dailyWithdraw;
   Account	*_parent;
 };
 

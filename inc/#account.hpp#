@@ -10,6 +10,8 @@ private:
   Date		*_birthdate;
   std::string	_firstname;
   std::string	_lastname;
+  
+  
 protected:
   int		_balance;
 public:
