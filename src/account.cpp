@@ -1,4 +1,5 @@
 #include	<iostream>
+#include	<list>
 
 #include	"account.hpp"
 
@@ -10,7 +11,7 @@ Account::Account() {
   this->_balance = 999;
 }
 
-Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, int newBalance) {
+Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, float newBalance) {
   this->_id = newId;
   this->_birthdate = newBirthdate;
   this->_lastname = newLastname;
@@ -34,8 +35,12 @@ std::string	Account::getLastname() const {
   return (this->_lastname);
 }
 
-int		Account::getBalance() const {
+float		Account::getBalance() const {
   return (this->_balance);
+}
+
+std::list<Record*>Account::getHistory() const {
+  return (this->_history);
 }
 
 void		Account::setId(int newId) {
@@ -54,15 +59,23 @@ void		Account::setFirstname(std::string newFirstname) {
   this->_firstname = newFirstname;
 }
 
-void		Account::setBalance(int newBalance) {
+void		Account::setBalance(float newBalance) {
   this->_balance = newBalance;
 }
 
-void		Account::deposit(int amount) {
+void		Account::setHistory(std::list<Record*> newHistory) {
+  this->_history = newHistory;
+}
+
+void		Account::addRecordToHistory(Record *newRecord) {
+  this->_history.push_back(newRecord);
+}
+
+void		Account::deposit(float amount) {
   this->_balance += amount;
 }
 
-int		Account::withdraw(int amount) {
+float		Account::withdraw(float amount) {
   if (amount <= this->_balance)
     this->_balance -= amount;
   else
@@ -72,10 +85,15 @@ int		Account::withdraw(int amount) {
 }
 
 void		Account::dump() const {
-  std::cout << "Id : " << this->_id << std::endl;
-  std::cout << "Birthdate : " << this->_birthdate->getLiteral() << std::endl;
-  std::cout << "Lastname : " << this->_lastname << std::endl;
-  std::cout << "Firstname : " << this->_firstname << std::endl;
-  std::cout << "Balance : " << this->_balance << std::endl;
+  std::cout << "Id : " << this->_id;
+  std::cout << " Birthdate : " << this->_birthdate->getLiteral();
+  std::cout << " \"" << this->_lastname;
+  std::cout << " " << this->_firstname;
+  std::cout << "\" Balance : " << this->_balance << std::endl;
+
+  std::cout << "--- History ---" << std::endl;
+  for (auto const& r : this->_history) {
+    r->dump();
+  }
 }
 Account::~Account() {}

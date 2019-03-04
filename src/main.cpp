@@ -9,15 +9,10 @@ int	main(int argc, char **argv) {
   (void)argv;
   Account *p = new Account(1, new Date(1990, 1, 1), "Tartouffe", "Michou", 999);
   Children *c = new Children(2, new Date(2019,12,22), "Desjardin", "Jean", 77, p);
-  c->withdraw(9);
-  std::cout << "Monthly withdraw : " << c->getMonthlyWithdraw();
-  std::cout << " Daily withdraw : " << c->getDailyWithdraw() << std::endl;
-  c->setDailyWithdraw(0);
-  c->withdraw(4);
-  std::cout << "Monthly withdraw : " << c->getMonthlyWithdraw();
-  std::cout << " Daily withdraw : " << c->getDailyWithdraw() << std::endl;
-  c->withdraw(6);
-  std::cout << "Monthly withdraw : " << c->getMonthlyWithdraw();
-  std::cout << " Daily withdraw : " << c->getDailyWithdraw() << std::endl;
+  c->addRecordToHistory(new Record(new Date(2019, 3, 4), 100.0));
+  c->addRecordToHistory(new Record(new Date(2018, 8, 23), 202.84));
+  c->addRecordToHistory(new Record(new Date(2017, 10, 19), 40.0));
+  c->addRecordToHistory(new Record(new Date(2016, 1, 1), 23.23));
+  c->dump();
   return (0);
 }

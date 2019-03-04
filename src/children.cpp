@@ -3,30 +3,30 @@
 #include	"children.hpp"
 
 Children::Children() {
-  this->_monthlyWithdraw = 0;
-  this->_dailyWithdraw = 0;
+  this->_monthlyWithdraw = 0.0;
+  this->_dailyWithdraw = 0.0;
   this->_parent = new Account();
 }
 
-Children::Children(int id, Date *date, std::string lastname, std::string firstname, int balance, Account *newParent) : Account(id, date, lastname, firstname, balance) {
-  this->_monthlyWithdraw = 0;
-  this->_dailyWithdraw = 0;
+Children::Children(int id, Date *date, std::string lastname, std::string firstname, float balance, Account *newParent) : Account(id, date, lastname, firstname, balance) {
+  this->_monthlyWithdraw = 0.0;
+  this->_dailyWithdraw = 0.0;
   this->_parent = newParent;
 }
 
-int		Children::getMonthlyLimit() const {
+float		Children::getMonthlyLimit() const {
   return (this->_monthlyLimit);
 }
 
-int		Children::getDailyLimit() const {
+float		Children::getDailyLimit() const {
   return (this->_dailyLimit);
 }
 
-int		Children::getMonthlyWithdraw() const {
+float		Children::getMonthlyWithdraw() const {
   return (this->_monthlyWithdraw);
 }
 
-int		Children::getDailyWithdraw() const {
+float		Children::getDailyWithdraw() const {
   return (this->_dailyWithdraw);
 }
 
@@ -34,11 +34,11 @@ Account		*Children::getParent() {
   return (this->_parent);
 }
 
-void		Children::setMonthlyWithdraw(int newMonthlyWithdraw) {
+void		Children::setMonthlyWithdraw(float newMonthlyWithdraw) {
   this->_monthlyWithdraw = newMonthlyWithdraw;
 }
 
-void		Children::setDailyWithdraw(int newDailyWithdraw) {
+void		Children::setDailyWithdraw(float newDailyWithdraw) {
   this->_dailyWithdraw = newDailyWithdraw;
 }
 
@@ -47,9 +47,9 @@ void		Children::setParent(Account *newParent) {
 }
 
 
-int		Children::withdraw(int amount) {
-  int	tmp_monthly = amount + this->_monthlyWithdraw;
-  int	tmp_daily = amount + this->_dailyWithdraw;
+float		Children::withdraw(float amount) {
+  float	tmp_monthly = amount + this->_monthlyWithdraw;
+  float	tmp_daily = amount + this->_dailyWithdraw;
   
   if (amount <= this->_balance && tmp_monthly <= this->_monthlyLimit && tmp_daily <= this->_dailyLimit) {
     if (this->_monthlyWithdraw <= this->_monthlyLimit && this->_dailyWithdraw <= this->_dailyLimit) {
