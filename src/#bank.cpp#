@@ -67,6 +67,7 @@ void			Bank::load(std::string locationFile) {
 	history.push_back(new Record(new Date(profil.at(i)), std::stof(profil.at(i + 1))));
 	i += 2;
       }
+      this->_clients.push_back(new Account);
       i = 7;
       history.clear();
     }

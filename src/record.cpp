@@ -28,8 +28,8 @@ void	Record::setBalance(float newBalance) {
 }
 
 void	Record::dump() const {
-  std::cout << "Date : " << this->_date->getLiteral() << std::endl;
-  std::cout << "Balance : " << this->_balance << std::endl;
+  std::cout << "Date : " << this->_date->getLiteral();
+  std::cout << " Amount : " << this->_balance << std::endl;
 }
 
 Record::~Record() {}

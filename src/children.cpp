@@ -8,7 +8,7 @@ Children::Children() {
   this->_parent = new Account();
 }
 
-Children::Children(int id, Date *date, std::string lastname, std::string firstname, float balance, Account *newParent, e_type type) : Account(id, date, lastname, firstname, balance, type) {
+Children::Children(int id, Date *date, std::string lastname, std::string firstname, float balance, Account *newParent, e_type type, std::list<Record*> history) : Account(id, date, lastname, firstname, balance, type, history) {
   this->_monthlyWithdraw = 0.0;
   this->_dailyWithdraw = 0.0;
   this->_parent = newParent;

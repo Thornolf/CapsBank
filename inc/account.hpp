@@ -27,7 +27,7 @@ protected:
   
 public:
   Account();
-  Account(int, Date *, std::string, std::string, float, e_type);
+  Account(int, Date *, std::string, std::string, float, e_type, std::list<Record*>);
   int			getId() const;
   Date			*getBirthdate() const;
   std::string		getLastname() const;

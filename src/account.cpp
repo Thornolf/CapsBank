@@ -8,17 +8,18 @@ Account::Account() {
   this->_birthdate = new Date();
   this->_lastname = "Menethil";
   this->_firstname = "Arthas";
-  this->_balance = 999;
+  this->_balance = 999.0;
   this->_accountType = e_type::classic;
 }
 
-Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, float newBalance, e_type newType) {
+Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, float newBalance, e_type newType, std::list<Record*> newHistory) {
   this->_id = newId;
   this->_birthdate = newBirthdate;
   this->_lastname = newLastname;
   this->_firstname = newFirstname;
   this->_balance = newBalance;
   this->_accountType = newType;
+  this->_history = newHistory;
 }
 
 int		Account::getId() const {
