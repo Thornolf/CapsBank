@@ -29,10 +29,17 @@ std::vector<Account*>	Bank::getClients(void) const {
 std::string		Bank::getDatabaseLocation(void) const {
   return (this->_databaseLocation);
 }
+/*
+template	<typename T>
+void			Bank::addClient(T *newAccount) {
+  this->_clients.push_back(newAccount);
+}*/
 
-void			Bank::addClient(Account *newAccount) {
+template <typename T>
+void Bank::addClient(T const &newAccount) {
   this->_clients.push_back(newAccount);
 }
+
 
 std::vector<std::string>Bank::createClient(std::string data) {
   std::string			delimiter = ",";
@@ -66,6 +73,28 @@ void			Bank::load(std::string locationFile) {
       while (i + 1 < profil.size()) {
 	history.push_back(new Record(new Date(profil.at(i)), std::stof(profil.at(i + 1))));
 	i += 2;
+      }
+      if (profil.at(1) == "E") {
+	std::cout << "I'm so younnnng !" << std::endl;
+	Account			*a;
+	bool			found = false;
+	for (auto tmp : this->_clients) {
+	  if (tmp->getId() == std::stoi(profil.at(5))) {
+	    a = tmp;
+	    found = true;
+	  }
+	}
+	if (found == false)
+	  std::cout << "Le parent n'a pas été trouvé" << std::endl;
+	addClient(new Children(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stof(profil.at(6)), a, e_type::classic, history));
+      }
+      else if (profil.at(1) == "R") {
+	std::cout << "I'm old goddamit !" << std::endl;
+	//TODO pas finit
+      }
+      else {
+	std::cout << "What's up boiii !" << std::endl;
+	addClient(new Account(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stof(profil.at(6)), e_type::classic, history));
       }
       i = 7;
       history.clear();

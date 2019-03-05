@@ -46,7 +46,6 @@ void		Children::setParent(Account *newParent) {
   this->_parent = newParent;
 }
 
-
 float		Children::withdraw(float amount) {
   float	tmp_monthly = amount + this->_monthlyWithdraw;
   float	tmp_daily = amount + this->_dailyWithdraw;
@@ -66,6 +65,19 @@ float		Children::withdraw(float amount) {
     else
       throw "Not enough funds in your bank accunt.";
   return (amount);
+}
+
+void		Children::dump() const {
+  std::cout << "Id : " << this->getId();
+  std::cout << " Birthdate : " << this->getBirthdate()->getLiteral();
+  std::cout << " \"" << this->getLastname();
+  std::cout << " " << this->getFirstname();
+  std::cout << "\" Balance : " << this->getBalance() << std::endl;
+  std::cout << "Responsable : " << this->_parent->getFirstname() << std::endl;
+  std::cout << "--- History ---" << std::endl;
+  for (auto const& r : this->getHistory()) {
+    r->dump();
+  }
 }
 
 Children::~Children() {

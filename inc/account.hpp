@@ -47,7 +47,7 @@ public:
   void			addRecordToHistory(Record*);
   void			deposit(float);
   virtual float		withdraw(float);
-  void			dump() const;
+  virtual void		dump() const;
   virtual ~Account();
 };
 

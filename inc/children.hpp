@@ -18,6 +18,7 @@ class		Children : public Account {
   void		setParent(Account *);
   
   float		withdraw(float);
+  void		dump() const;
   virtual ~Children();
  private:
   float const	_monthlyLimit = 50.0;
