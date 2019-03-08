@@ -8,12 +8,12 @@ Bank::Bank(std::string	newDatabaseLocation) {
   load(this->_databaseLocation);
 }
 
-Bank::Bank(std::vector<Account*> newClients, std::string	newDatabaseLocation) {
+Bank::Bank(std::vector<Account*> newClients, std::string newDatabaseLocation) {
   this->_clients = newClients;
   this->_databaseLocation = newDatabaseLocation;
 }
 
-void			Bank::setClients(std::vector<Account*>	newClients) {
+void			Bank::setClients(std::vector<Account*> newClients) {
   this->_clients = newClients;
 }
 
@@ -29,14 +29,9 @@ std::vector<Account*>	Bank::getClients(void) const {
 std::string		Bank::getDatabaseLocation(void) const {
   return (this->_databaseLocation);
 }
-/*
-template	<typename T>
-void			Bank::addClient(T *newAccount) {
-  this->_clients.push_back(newAccount);
-}*/
 
 template <typename T>
-void Bank::addClient(T const &newAccount) {
+void			Bank::addClient(T const &newAccount) {
   this->_clients.push_back(newAccount);
 }
 
@@ -55,32 +50,54 @@ std::vector<std::string>Bank::createClient(std::string data) {
   profil.push_back(data);
   return (profil);
 }
-  
+
 void			Bank::save(std::string locationFile) {
-  //std::ofstream clearFile;
+  std::ofstream clearFile;
   
-  //clearFile.open(locationFile, std::ofstream::out | std::ofstream::trunc);
-  //clearFile.close();
-  (void)locationFile;
+  clearFile.open(locationFile, std::ofstream::out | std::ofstream::trunc);
+  clearFile.close();
+  
+  std::ofstream writeFile;
+  writeFile.open(locationFile);
   for (auto client : this->_clients) {
-    if (client->getType() == e_type::retraite) {
-      std::cout << client->getId() << ",A,"<< client->getType() << client->getLastname() << ",";
-      std::cout << client->getFirstname() << "," << client->getBirthdate()->getLiteral() << ",,";
-      std::cout << client->getBalance() << "," << std::endl;
-    }
-    else if (client->getType() == e_type::enfant) {
-      std::cout << client->getId() << ",A,"<< client->getType() << client->getLastname() << ",";
-      std::cout << client->getFirstname() << "," << client->getBirthdate()->getLiteral() << ",";
-      std::cout << "Parent ID"  << "," << client->getBalance() << "," << std::endl;
-    }
-    else {
-      std::cout << client->getId() << ",A,"<< client->getType() << client->getLastname() << ",";
-      std::cout << client->getFirstname() << "," << client->getBirthdate()->getLiteral() << ",,";
-      std::cout << client->getBalance() << "," << std::endl;
-    }
+    std::string s = "";
     
+    if (client->getType() == e_type::retraite) {
+      s += std::to_string(client->getId());
+      s += ",R," + client->getLastname() + "," + client->getFirstname() + ",";
+      s +=  client->getBirthdate()->getLiteral() + ",,";
+      s += std::to_string(client->getBalance());
+      for (auto h : client->getHistory()) {
+	s += "," + h->getDate()->getLiteral() + ",";
+	s += std::to_string(h->getBalance());
+      }
+      s += "\n";
+    } else if (client->getType() == e_type::enfant) {
+      
+      s += std::to_string(client->getId());
+      s += ",E," + client->getLastname() + "," + client->getFirstname() + ",";
+      s +=  client->getBirthdate()->getLiteral() + ",";
+      s += std::to_string(dynamic_cast<Children *>(client)->getParentId()) + ",";
+      s += std::to_string(client->getBalance());
+      for (auto h : client->getHistory()) {
+	s += "," + h->getDate()->getLiteral() + ",";
+	s += std::to_string(h->getBalance());
+      }
+      s += "\n";
+    } else {
+      s += std::to_string(client->getId());
+      s += ",A," + client->getLastname() + "," + client->getFirstname() + ",";
+      s +=  client->getBirthdate()->getLiteral() + ",,";
+      s += std::to_string(client->getBalance());
+      for (auto h : client->getHistory()) {
+	s += "," + h->getDate()->getLiteral() + ",";
+	s += std::to_string(h->getBalance());
+      }
+      s += "\n";
+    }
+    writeFile << s;
   }
-  
+  writeFile.close();
 }
 
 void			Bank::load(std::string locationFile) {
@@ -98,20 +115,23 @@ void			Bank::load(std::string locationFile) {
 	i += 2;
       }
       if (profil.at(1) == "E") {
-	addClient(new Children(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stof(profil.at(6)), std::stoi(profil.at(5)), e_type::classic, history));
+	addClient(new Children(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stod(profil.at(6)), std::stoi(profil.at(5)), e_type::enfant, history));
       }
       else if (profil.at(1) == "R") {
-	std::cout << "I'm old goddamit !" << std::endl;
-	//TODO pas finit
+	addClient(new Retraite(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stod(profil.at(6)), e_type::retraite, history));
       }
       else {
-	addClient(new Account(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stof(profil.at(6)), e_type::classic, history));
+	addClient(new Account(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stod(profil.at(6)), e_type::classic, history));
       }
       i = 7;
       history.clear();
     }
     file.close();
   }
+}
+
+void			Bank::dump() const {
+  std::cout << "Oh hi mark !" << std::endl;  
 }
 
 Bank::~Bank() {

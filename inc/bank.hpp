@@ -5,6 +5,7 @@
 
 #include			"account.hpp"
 #include			"children.hpp"
+#include			"retraite.hpp"
 
 class				Bank {
 private:
@@ -19,14 +20,11 @@ public:
   std::string			getDatabaseLocation(void) const;
   
   std::vector<std::string>	createClient(std::string);
-  /*
-  template <typename T>
-  void				addClient(T *);
-  */
   template <typename T>
   void				addClient(T const &);
   void				save(std::string);
   void				load(std::string);
+  void				dump() const;
   virtual ~Bank();
 };
 

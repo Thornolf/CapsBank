@@ -6,25 +6,25 @@
 class		Children : public Account {
  public:
   Children();
-  Children(int , Date *, std::string, std::string , float, int, e_type, std::list<Record*>);
+  Children(int , Date *, std::string, std::string , double, int, e_type, std::list<Record*>);
 
-  float		getMonthlyLimit() const;
-  float		getDailyLimit() const;
-  float		getMonthlyWithdraw() const;
-  float		getDailyWithdraw() const;
+  double	getMonthlyLimit() const;
+  double	getDailyLimit() const;
+  double	getMonthlyWithdraw() const;
+  double	getDailyWithdraw() const;
   int		getParentId();
-  void		setMonthlyWithdraw(float);
-  void		setDailyWithdraw(float);
+  void		setMonthlyWithdraw(double);
+  void		setDailyWithdraw(double);
   void		setParentId(int);
   
-  float		withdraw(float);
+  double		withdraw(double);
   void		dump() const;
   virtual ~Children();
  private:
-  float const	_monthlyLimit = 50.0;
-  float const	_dailyLimit = 10.0;
-  float		_monthlyWithdraw;
-  float		_dailyWithdraw;
+  double const	_monthlyLimit = 50.0;
+  double const	_dailyLimit = 10.0;
+  double	_monthlyWithdraw;
+  double	_dailyWithdraw;
   int		_parentId;
 };
 

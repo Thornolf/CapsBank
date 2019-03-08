@@ -12,7 +12,7 @@ Account::Account() {
   this->_accountType = e_type::classic;
 }
 
-Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, float newBalance, e_type newType, std::list<Record*> newHistory) {
+Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, double newBalance, e_type newType, std::list<Record*> newHistory) {
   this->_id = newId;
   this->_birthdate = newBirthdate;
   this->_lastname = newLastname;
@@ -38,7 +38,7 @@ std::string	Account::getLastname() const {
   return (this->_lastname);
 }
 
-float		Account::getBalance() const {
+double		Account::getBalance() const {
   return (this->_balance);
 }
 
@@ -66,7 +66,7 @@ void		Account::setFirstname(std::string newFirstname) {
   this->_firstname = newFirstname;
 }
 
-void		Account::setBalance(float newBalance) {
+void		Account::setBalance(double newBalance) {
   this->_balance = newBalance;
 }
 
@@ -82,11 +82,11 @@ void		Account::addRecordToHistory(Record *newRecord) {
   this->_history.push_back(newRecord);
 }
 
-void		Account::deposit(float amount) {
+void		Account::deposit(double amount) {
   this->_balance += amount;
 }
 
-float		Account::withdraw(float amount) {
+double		Account::withdraw(double amount) {
   if (amount <= this->_balance)
     this->_balance -= amount;
   else

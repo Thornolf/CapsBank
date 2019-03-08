@@ -3,16 +3,14 @@
 
 #include	<string>
 
-#include	"account.hp"
+#include	"account.hpp"
 
 class		Retraite : public Account {
-private:
-
 public:
   Retraite();
-  Retraite(int, Date *, std::string, std::string, float);
-  float		withdraw(float);
-  bool		authorization(float);
+  Retraite(int, Date *, std::string, std::string, double, e_type, std::list<Record*>);
+  double	withdraw(double);
+  bool		authorization(double);
   virtual ~Retraite();
 };
 

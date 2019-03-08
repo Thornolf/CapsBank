@@ -22,17 +22,17 @@ private:
   std::list<Record*>	_history;
   
 protected:
-  int			_balance;
+  double		_balance;
   e_type		_accountType;
   
 public:
   Account();
-  Account(int, Date *, std::string, std::string, float, e_type, std::list<Record*>);
+  Account(int, Date *, std::string, std::string, double, e_type, std::list<Record*>);
   int			getId() const;
   Date			*getBirthdate() const;
   std::string		getLastname() const;
   std::string		getFirstname() const;
-  float			getBalance() const;
+  double		getBalance() const;
   std::list<Record*>	getHistory() const;
   e_type		getType() const;
 
@@ -40,13 +40,13 @@ public:
   void			setBirthdate(Date*);
   void			setLastname(std::string);
   void			setFirstname(std::string);
-  void			setBalance(float);
+  void			setBalance(double);
   void			setHistory(std::list<Record*>);
   void			setType(e_type);
   
   void			addRecordToHistory(Record*);
-  void			deposit(float);
-  virtual float		withdraw(float);
+  void			deposit(double);
+  virtual double	withdraw(double);
   virtual void		dump() const;
   virtual ~Account();
 };

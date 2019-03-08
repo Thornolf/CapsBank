@@ -6,15 +6,15 @@
 class Record {
 private:
   Date		*_date;
-  float		_balance;
+  double	_balance;
 public:
   Record();
-  Record(Date*, float);
+  Record(Date*, double);
   
   Date		*getDate() const;
-  float		getBalance() const;
+  double	getBalance() const;
   void		setDate(Date *);
-  void		setBalance(float);
+  void		setBalance(double);
   void		dump() const;
   virtual ~Record();
 };
