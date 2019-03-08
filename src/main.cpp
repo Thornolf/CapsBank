@@ -1,4 +1,5 @@
 #include	<iostream>
+#include	<fstream>
 
 #include	"date.hpp"
 #include	"account.hpp"
@@ -10,7 +11,9 @@ int	main(int argc, char **argv) {
   (void)argv;
   Bank *b = new Bank("banque.csv");
   for (auto i : b->getClients()) {
-    i->dump();
+    if (i->getId() == 2102)
+      i->dump();
   }
+  b->save("banque.csv");
   return (0);
 }

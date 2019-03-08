@@ -57,7 +57,30 @@ std::vector<std::string>Bank::createClient(std::string data) {
 }
   
 void			Bank::save(std::string locationFile) {
+  //std::ofstream clearFile;
+  
+  //clearFile.open(locationFile, std::ofstream::out | std::ofstream::trunc);
+  //clearFile.close();
   (void)locationFile;
+  for (auto client : this->_clients) {
+    if (client->getType() == e_type::retraite) {
+      std::cout << client->getId() << ",A,"<< client->getType() << client->getLastname() << ",";
+      std::cout << client->getFirstname() << "," << client->getBirthdate()->getLiteral() << ",,";
+      std::cout << client->getBalance() << "," << std::endl;
+    }
+    else if (client->getType() == e_type::enfant) {
+      std::cout << client->getId() << ",A,"<< client->getType() << client->getLastname() << ",";
+      std::cout << client->getFirstname() << "," << client->getBirthdate()->getLiteral() << ",";
+      std::cout << "Parent ID"  << "," << client->getBalance() << "," << std::endl;
+    }
+    else {
+      std::cout << client->getId() << ",A,"<< client->getType() << client->getLastname() << ",";
+      std::cout << client->getFirstname() << "," << client->getBirthdate()->getLiteral() << ",,";
+      std::cout << client->getBalance() << "," << std::endl;
+    }
+    
+  }
+  
 }
 
 void			Bank::load(std::string locationFile) {
@@ -75,25 +98,13 @@ void			Bank::load(std::string locationFile) {
 	i += 2;
       }
       if (profil.at(1) == "E") {
-	std::cout << "I'm so younnnng !" << std::endl;
-	Account			*a;
-	bool			found = false;
-	for (auto tmp : this->_clients) {
-	  if (tmp->getId() == std::stoi(profil.at(5))) {
-	    a = tmp;
-	    found = true;
-	  }
-	}
-	if (found == false)
-	  std::cout << "Le parent n'a pas été trouvé" << std::endl;
-	addClient(new Children(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stof(profil.at(6)), a, e_type::classic, history));
+	addClient(new Children(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stof(profil.at(6)), std::stoi(profil.at(5)), e_type::classic, history));
       }
       else if (profil.at(1) == "R") {
 	std::cout << "I'm old goddamit !" << std::endl;
 	//TODO pas finit
       }
       else {
-	std::cout << "What's up boiii !" << std::endl;
 	addClient(new Account(std::stoi(profil.at(0)), new Date(profil.at(4)), profil.at(2), profil.at(3), std::stof(profil.at(6)), e_type::classic, history));
       }
       i = 7;

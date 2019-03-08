@@ -5,13 +5,13 @@
 Children::Children() {
   this->_monthlyWithdraw = 0.0;
   this->_dailyWithdraw = 0.0;
-  this->_parent = new Account();
+  this->_parentId = 1;
 }
 
-Children::Children(int id, Date *date, std::string lastname, std::string firstname, float balance, Account *newParent, e_type type, std::list<Record*> history) : Account(id, date, lastname, firstname, balance, type, history) {
+Children::Children(int id, Date *date, std::string lastname, std::string firstname, float balance, int newParentId, e_type type, std::list<Record*> history) : Account(id, date, lastname, firstname, balance, type, history) {
   this->_monthlyWithdraw = 0.0;
   this->_dailyWithdraw = 0.0;
-  this->_parent = newParent;
+  this->_parentId = newParentId;
 }
 
 float		Children::getMonthlyLimit() const {
@@ -30,20 +30,20 @@ float		Children::getDailyWithdraw() const {
   return (this->_dailyWithdraw);
 }
 
-Account		*Children::getParent() {
-  return (this->_parent);
+int		Children::getParentId() {
+  return (this->_parentId);
 }
 
-void		Children::setMonthlyWithdraw(float newMonthlyWithdraw) {
+void		Children::setMonthlyWithdraw(float	newMonthlyWithdraw) {
   this->_monthlyWithdraw = newMonthlyWithdraw;
 }
 
-void		Children::setDailyWithdraw(float newDailyWithdraw) {
+void		Children::setDailyWithdraw(float	newDailyWithdraw) {
   this->_dailyWithdraw = newDailyWithdraw;
 }
 
-void		Children::setParent(Account *newParent) {
-  this->_parent = newParent;
+void		Children::setParentId(int	newParentId) {
+  this->_parentId = newParentId;
 }
 
 float		Children::withdraw(float amount) {
@@ -73,7 +73,7 @@ void		Children::dump() const {
   std::cout << " \"" << this->getLastname();
   std::cout << " " << this->getFirstname();
   std::cout << "\" Balance : " << this->getBalance() << std::endl;
-  std::cout << "Responsable : " << this->_parent->getFirstname() << std::endl;
+  std::cout << "Responsable : " << this->_parentId << std::endl;
   std::cout << "--- History ---" << std::endl;
   for (auto const& r : this->getHistory()) {
     r->dump();

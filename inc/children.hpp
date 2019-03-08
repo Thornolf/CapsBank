@@ -6,16 +6,16 @@
 class		Children : public Account {
  public:
   Children();
-  Children(int , Date *, std::string, std::string , float, Account *, e_type, std::list<Record*>);
+  Children(int , Date *, std::string, std::string , float, int, e_type, std::list<Record*>);
 
   float		getMonthlyLimit() const;
   float		getDailyLimit() const;
   float		getMonthlyWithdraw() const;
   float		getDailyWithdraw() const;
-  Account	*getParent();
+  int		getParentId();
   void		setMonthlyWithdraw(float);
   void		setDailyWithdraw(float);
-  void		setParent(Account *);
+  void		setParentId(int);
   
   float		withdraw(float);
   void		dump() const;
@@ -25,7 +25,7 @@ class		Children : public Account {
   float const	_dailyLimit = 10.0;
   float		_monthlyWithdraw;
   float		_dailyWithdraw;
-  Account	*_parent;
+  int		_parentId;
 };
 
 #endif		/* _CHILDREN_HPP_ */
