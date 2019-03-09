@@ -22,6 +22,7 @@ public:
   std::vector<std::string>	createClient(std::string);
   template <typename T>
   void				addClient(T const &);
+  void				dynamicallyCreateClient(Date *, std::string, std::string);
   void				save(std::string);
   void				load(std::string);
   void				dump() const;

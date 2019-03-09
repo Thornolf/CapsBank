@@ -51,6 +51,28 @@ std::vector<std::string>Bank::createClient(std::string data) {
   return (profil);
 }
 
+void			Bank::dynamicallyCreateClient(Date *birthdate, std::string lastname, std::string firstname) {
+  int newId = 1;
+
+  for (auto it = this->_clients.begin(); it != this->_clients.end(); it++) {
+    if (newId == (*it)->getId()) {
+      newId++;
+      it = this->_clients.begin();
+    }
+  }
+  std::cout << "Created with the id : " << newId << std::endl;
+  (void)birthdate;
+  (void)lastname;
+  (void)firstname;
+  /*
+  for (auto client : this->_clients) {
+    if (newId == client->getId()) {
+      newId++;
+      client = this->_clients.begin();
+    }
+  }
+  */
+}
 void			Bank::save(std::string locationFile) {
   std::ofstream clearFile;
   
@@ -58,7 +80,7 @@ void			Bank::save(std::string locationFile) {
   clearFile.close();
   
   std::ofstream writeFile;
-  writeFile.open(locationFile);
+  writeFile.open(locationFile, std::ios::out);
   for (auto client : this->_clients) {
     std::string s = "";
     
@@ -102,7 +124,7 @@ void			Bank::save(std::string locationFile) {
 
 void			Bank::load(std::string locationFile) {
   std::string			line;
-  std::ifstream			file(locationFile);
+  std::ifstream			file(locationFile, std::ios::in);
   std::vector<std::string>	profil;
   std::list<Record*>		history;
   unsigned int			i = 7;

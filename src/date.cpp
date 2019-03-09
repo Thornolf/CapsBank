@@ -53,6 +53,8 @@ void		Date::setLiteral(std::string newLiteral) {
   this->_literal = newLiteral;
 }
 
+
+
 void		Date::distributeIntegerDate(std::string newDate) {
   this->_year = std::stoi(newDate.substr(0, newDate.find("-") + 2));
   this->_month = std::stoi(newDate.substr(6, newDate.find("-")));
