@@ -18,11 +18,13 @@ public:
   void				setDatabaseLocation(std::string);
   std::vector<Account*>		getClients(void) const;
   std::string			getDatabaseLocation(void) const;
-  
+
+  int				nonUsedId(std::vector<Account *>);
+  bool				validId(int);
   std::vector<std::string>	createClient(std::string);
   template <typename T>
   void				addClient(T const &);
-  void				dynamicallyCreateClient(Date *, std::string, std::string);
+  void				dynamicallyCreateClient(Date *, std::string, std::string, e_type, int);
   void				save(std::string);
   void				load(std::string);
   void				dump() const;

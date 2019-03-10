@@ -51,28 +51,39 @@ std::vector<std::string>Bank::createClient(std::string data) {
   return (profil);
 }
 
-void			Bank::dynamicallyCreateClient(Date *birthdate, std::string lastname, std::string firstname) {
-  int newId = 1;
-
-  for (auto it = this->_clients.begin(); it != this->_clients.end(); it++) {
-    if (newId == (*it)->getId()) {
-      newId++;
-      it = this->_clients.begin();
-    }
-  }
-  std::cout << "Created with the id : " << newId << std::endl;
+void			Bank::dynamicallyCreateClient(Date *birthdate, std::string lastname, std::string firstname, e_type type, int parentId) {
+  int newId = nonUsedId(this->_clients);
+  if (type == e_type::enfant)
+    addClient(new Children(newId, birthdate, lastname, firstname, 0.0, parentId, e_type::enfant));
+  else
+    addClient(new Account(newId, birthdate, lastname, firstname, 0.0, e_type::classic));
   (void)birthdate;
   (void)lastname;
   (void)firstname;
-  /*
-  for (auto client : this->_clients) {
-    if (newId == client->getId()) {
+  (void)type;
+  (void)parentId;
+}
+
+int			Bank::nonUsedId(std::vector<Account *> clients) {
+  int newId = 1;
+
+  for (auto it = clients.begin(); it != clients.end(); it++) {
+    if (newId == (*it)->getId()) {
       newId++;
-      client = this->_clients.begin();
+      it = clients.begin();
     }
   }
-  */
+  return (newId);
 }
+
+bool			Bank::validId(int parentId) {
+  for (auto client : this->_clients) {
+    if (client->getId() == parentId)
+      return (true);
+  }
+  return (false);
+}
+
 void			Bank::save(std::string locationFile) {
   std::ofstream clearFile;
   

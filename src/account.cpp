@@ -22,6 +22,15 @@ Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::st
   this->_history = newHistory;
 }
 
+Account::Account(int newId, Date *newBirthdate, std::string newLastname, std::string newFirstname, double newBalance, e_type newType) {
+  this->_id = newId;
+  this->_birthdate = newBirthdate;
+  this->_lastname = newLastname;
+  this->_firstname = newFirstname;
+  this->_balance = newBalance;
+  this->_accountType = newType;
+}
+
 int		Account::getId() const {
   return (this->_id);
 }

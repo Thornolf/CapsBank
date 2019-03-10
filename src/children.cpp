@@ -14,6 +14,12 @@ Children::Children(int id, Date *date, std::string lastname, std::string firstna
   this->_parentId = newParentId;
 }
 
+Children::Children(int id, Date *date, std::string lastname, std::string firstname, double balance, int newParentId, e_type type) : Account(id, date, lastname, firstname, balance, type) {
+  this->_monthlyWithdraw = 0.0;
+  this->_dailyWithdraw = 0.0;
+  this->_parentId = newParentId;
+}
+
 double		Children::getMonthlyLimit() const {
   return (this->_monthlyLimit);
 }

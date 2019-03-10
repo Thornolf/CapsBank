@@ -7,6 +7,7 @@ class		Children : public Account {
  public:
   Children();
   Children(int , Date *, std::string, std::string , double, int, e_type, std::list<Record*>);
+  Children(int , Date *, std::string, std::string , double, int, e_type);
 
   double	getMonthlyLimit() const;
   double	getDailyLimit() const;

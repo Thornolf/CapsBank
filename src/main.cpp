@@ -6,6 +6,7 @@
 #include	"account.hpp"
 #include	"children.hpp"
 #include	"bank.hpp"
+#include	<time.h>
 
 bool            isDateValid(std::string predicat) {
   std::vector<std::string>	data;
@@ -53,13 +54,14 @@ void deposit(std::string s, Bank *b) {
 }
 
 void create(std::string s, Bank *b) {
-  std::string date;
-  std::string firstname;
-  std::string lastname;
-  std::string cmd;
+  std::string	date;
+  std::string	firstname;
+  std::string	lastname;
+  std::string	cmd;
+  int		parentId = 0;
+  e_type	type;
   
   (void)s;
-  (void)b;
   std::cout << "What is the birthdate of the new user (Format YYYY-(M)M-DD) ?\n> ";
   std::getline(std::cin, cmd);
   date = cmd;
@@ -69,8 +71,20 @@ void create(std::string s, Bank *b) {
   std::cout << "What is the firstname of the new user ?\n> ";
   std::getline(std::cin, cmd);
   firstname = cmd;
+  Date *d = new Date(date);
+  if (d->daysBetweenDate(d->getLiteral(), d->getNow()) <= 3650) {
+    type = e_type::enfant;
+    while (b->validId(std::stoi(cmd))) {
+      std::cout << "As a children you must provide the ID from one of your parent ?\n> ";
+      std::getline(std::cin, cmd);
+    }
+    parentId = std::stoi(cmd);
+    std::cout << "Parent Id : " << parentId << std::endl;
+  }
+  else
+    type = e_type::classic;
   if (isDateValid(date) == true) { //TODO add verification lastname & firstname
-    b->dynamicallyCreateClient(new Date(date), lastname, firstname);
+    b->dynamicallyCreateClient(new Date(date), lastname, firstname, type, parentId);
   }
 }
 
@@ -105,7 +119,6 @@ int	main(int argc, char **argv) {
   doit.insert(MapCall::value_type("create", create));
   doit.insert(MapCall::value_type("help", help));
   doit.insert(MapCall::value_type("quit", quit));
-  
   std::string cmd;
   std::cout << "> ";
   while (cmd != "exit" && cmd != "quit") {
