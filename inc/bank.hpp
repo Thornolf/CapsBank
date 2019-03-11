@@ -20,7 +20,7 @@ public:
   std::string			getDatabaseLocation(void) const;
 
   int				nonUsedId(std::vector<Account *>);
-  bool				validId(int);
+  bool				validId(std::string);
   std::vector<std::string>	createClient(std::string);
   template <typename T>
   void				addClient(T const &);
@@ -30,6 +30,7 @@ public:
   void				save(std::string);
   void				load(std::string);
   void				dump() const;
+  bool				isDigit(const std::string &) const;
   virtual ~Bank();
 };
 

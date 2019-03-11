@@ -8,14 +8,6 @@
 #include	"bank.hpp"
 #include	"exceptionHandler.hpp"
 
-static bool isDigit(const std::string& string)
-{
-    std::string::const_iterator it = string.begin();
-    while (it != string.end() && std::isdigit(*it))
-      ++it;
-    return !string.empty() && it == string.end();
-}
-
 bool            isDateValid(std::string predicat) {
   std::vector<std::string>	data;
   std::string			delimiter = "-";
@@ -48,8 +40,8 @@ bool            isDateValid(std::string predicat) {
 
 void show(std::string s, Bank *b) {
   (void)s;
-  std::string	cmd;
   bool		valid = false;
+  std::string	cmd;
   
   try {
     std::cout << "Which account do you want to see ? (Give an ID or type all to see all accounts)\n> ";
@@ -57,17 +49,17 @@ void show(std::string s, Bank *b) {
     if (cmd == "all")
       b->showAll();
     else {
-      while (valid == false) {
-	if (isDigit(cmd) == false)
-	  throw ExceptionHandler("Not a number");
-	if (b->validId(std::stoi(cmd) == true))
+      while (valid == false ) {
+	if (b->validId(cmd) == true) {
 	  valid = true;
-	else
+	  for (auto client : b->getClients()) {
+	    if (std::stoi(cmd) == client->getId())
+	      b->showSpecific(std::stoi(cmd));
+	  }
+	} else {
+	  std::cout << "> ";
 	  std::getline(std::cin, cmd);
-      }
-      for (auto client : b->getClients()) {
-	if (std::stoi(cmd) == client->getId())
-	  b->showSpecific(std::stoi(cmd));
+	}
       }
     }
   } catch (ExceptionHandler &e) {
@@ -77,13 +69,65 @@ void show(std::string s, Bank *b) {
 }
 
 void withdraw(std::string s, Bank *b) {
-  std::cout << s << std::endl;
-  (void)b;
+  std::string	cmd;
+  int		id;
+  double	amount = 0;
+  try {
+    std::cout << "Enter the ID of the account you want to withdraw from.\n> ";
+    std::getline(std::cin, cmd);
+    if (b->validId(cmd) == false) {
+      throw ExceptionHandler("The account doesn't exist.\n");
+    }
+    id = std::stoi(cmd);
+    std::cout << "How much do you want to withraw from this account ?\n> ";
+    std::getline(std::cin, cmd);
+    if (b->isDigit(cmd) == true) {
+      amount = std::stod(cmd);
+      for (auto client : b->getClients()) {
+	if (client->getId() == id) {
+	  if (client->getType() == e_type::retraite)
+	    dynamic_cast<Retraite *>(client)->withdraw(amount);
+	  else if (client->getType() == e_type::enfant)
+	    dynamic_cast<Children *>(client)->withdraw(amount);
+	  else
+	    client->withdraw(amount);
+	}
+      }
+    }    
+  } catch (ExceptionHandler &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return;
+  }
+  (void)s;
 }
 
 void deposit(std::string s, Bank *b) {
-  std::cout << s << std::endl;
-  (void)b;
+  
+  std::string	cmd;
+  int		id;
+  double	amount = 0;
+  try {
+    std::cout << "Enter the ID of the account you want to deposit on.\n> ";
+    std::getline(std::cin, cmd);
+    if (b->validId(cmd) == false) {
+      throw ExceptionHandler("The account doesn't exist.\n");
+    }
+    id = std::stoi(cmd);
+    std::cout << "How much do you want to deposit on this account ?\n> ";
+    std::getline(std::cin, cmd);
+    if (b->isDigit(cmd) == true) {
+      amount = std::stod(cmd);
+      for (auto client : b->getClients()) {
+	if (client->getId() == id) {
+	  client->deposit(amount);
+	}
+      }
+    }    
+  } catch (ExceptionHandler &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return;
+  }
+  (void)s;
 }
 
 void create(std::string s, Bank *b) {
@@ -110,7 +154,7 @@ void create(std::string s, Bank *b) {
       type = e_type::enfant;
       std::cout << "As a children you must provide the ID from one of your parent. \n> ";
       std::getline(std::cin, cmd);
-      while (b->validId(std::stoi(cmd)) == false) {
+      while (b->validId(cmd) == false) {
 	std::cout << "The ID doesn't exist, please enter a valid ID. \n> ";
 	std::getline(std::cin, cmd);
       }
@@ -164,7 +208,7 @@ int	main(int argc, char **argv) {
       (*call).second(cmd, b);
     }
     else {
-      std::cout << "Unknown call requested" << std::endl;
+      std::cout << "Unknown command, type help to get the command list." << std::endl;
     }
     std::cout << "> ";
   }

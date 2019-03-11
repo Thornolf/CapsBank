@@ -1,6 +1,7 @@
 #include	<iostream>
 
 #include	"children.hpp"
+#include	"exceptionHandler.hpp"
 
 Children::Children() {
   this->_monthlyWithdraw = 0.0;
@@ -55,21 +56,22 @@ void		Children::setParentId(int	newParentId) {
 double		Children::withdraw(double amount) {
   double	tmp_monthly = amount + this->_monthlyWithdraw;
   double	tmp_daily = amount + this->_dailyWithdraw;
-  
+
   if (amount <= this->_balance && tmp_monthly <= this->_monthlyLimit && tmp_daily <= this->_dailyLimit) {
     if (this->_monthlyWithdraw <= this->_monthlyLimit && this->_dailyWithdraw <= this->_dailyLimit) {
       this->_dailyWithdraw += amount;
       this->_monthlyWithdraw += amount;
       this->_balance -= amount;
+      this->addRecordToHistory(new Record(new Date(this->getBirthdate()->getNow()), this->_balance));
     }
   }
   else
     if (tmp_monthly <= this->_monthlyLimit)
-      throw "You cannot withdraw more than your monthly limit.";
+      throw ExceptionHandler("You cannot withdraw more than your monthly limit.");
     else if (tmp_monthly <= this->_dailyLimit)
-      throw "You cannot withdraw more than your daily limit.";
+      throw ExceptionHandler("You cannot withdraw more than your daily limit.");
     else
-      throw "Not enough funds in your bank accunt.";
+      throw ExceptionHandler("Not enough funds in your bank account.");
   return (amount);
 }
 

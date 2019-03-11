@@ -2,6 +2,7 @@
 #include	<list>
 
 #include	"account.hpp"
+#include	"exceptionHandler.hpp"
 
 Account::Account() {
   this->_id = 1;
@@ -99,14 +100,16 @@ void		Account::addRecordToHistory(Record *newRecord) {
 
 void		Account::deposit(double amount) {
   this->_balance += amount;
+  this->addRecordToHistory(new Record(new Date(this->getBirthdate()->getNow()), this->_balance));
 }
 
 double		Account::withdraw(double amount) {
-  if (amount <= this->_balance)
+  if (amount <= this->_balance) {
     this->_balance -= amount;
+    this->addRecordToHistory(new Record(new Date(this->getBirthdate()->getNow()), this->_balance));
+  }
   else
-    std::cout << "Cannot take this amount." << std::endl;
-    //TODO throw error
+    throw ExceptionHandler("Not enough funds in your bank account.");
   return (amount);
 }
 
