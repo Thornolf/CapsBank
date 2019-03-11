@@ -25,6 +25,8 @@ public:
   template <typename T>
   void				addClient(T const &);
   void				dynamicallyCreateClient(Date *, std::string, std::string, e_type, int);
+  void				showAll(void);
+  void				showSpecific(int);
   void				save(std::string);
   void				load(std::string);
   void				dump() const;

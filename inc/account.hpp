@@ -44,7 +44,8 @@ public:
   void			setBalance(double);
   void			setHistory(std::list<Record*>);
   void			setType(e_type);
-  
+
+  void			showHistory(void);
   void			addRecordToHistory(Record*);
   void			deposit(double);
   virtual double	withdraw(double);

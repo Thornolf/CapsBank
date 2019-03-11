@@ -6,7 +6,15 @@
 #include	"account.hpp"
 #include	"children.hpp"
 #include	"bank.hpp"
-#include	<time.h>
+#include	"exceptionHandler.hpp"
+
+static bool isDigit(const std::string& string)
+{
+    std::string::const_iterator it = string.begin();
+    while (it != string.end() && std::isdigit(*it))
+      ++it;
+    return !string.empty() && it == string.end();
+}
 
 bool            isDateValid(std::string predicat) {
   std::vector<std::string>	data;
@@ -39,8 +47,33 @@ bool            isDateValid(std::string predicat) {
 }
 
 void show(std::string s, Bank *b) {
-  std::cout << s << std::endl;
-  (void)b;
+  (void)s;
+  std::string	cmd;
+  bool		valid = false;
+  
+  try {
+    std::cout << "Which account do you want to see ? (Give an ID or type all to see all accounts)\n> ";
+    std::getline(std::cin, cmd);
+    if (cmd == "all")
+      b->showAll();
+    else {
+      while (valid == false) {
+	if (isDigit(cmd) == false)
+	  throw ExceptionHandler("Not a number");
+	if (b->validId(std::stoi(cmd) == true))
+	  valid = true;
+	else
+	  std::getline(std::cin, cmd);
+      }
+      for (auto client : b->getClients()) {
+	if (std::stoi(cmd) == client->getId())
+	  b->showSpecific(std::stoi(cmd));
+      }
+    }
+  } catch (ExceptionHandler &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return;
+  }
 }
 
 void withdraw(std::string s, Bank *b) {
@@ -64,26 +97,27 @@ void create(std::string s, Bank *b) {
   (void)s;
   std::cout << "What is the birthdate of the new user (Format YYYY-(M)M-DD) ?\n> ";
   std::getline(std::cin, cmd);
-  date = cmd;
+  date = cmd; 
   std::cout << "What is the lastname of the new user ?\n> ";
   std::getline(std::cin, cmd);
   lastname = cmd;
   std::cout << "What is the firstname of the new user ?\n> ";
   std::getline(std::cin, cmd);
   firstname = cmd;
-  Date *d = new Date(date);
-  if (d->daysBetweenDate(d->getLiteral(), d->getNow()) <= 3650) {
-    type = e_type::enfant;
-    while (b->validId(std::stoi(cmd))) {
-      std::cout << "As a children you must provide the ID from one of your parent ?\n> ";
+  if (isDateValid(date) == true) { //TODO add verification lastname & firstname // Throw si date invalide
+    Date *d = new Date(date);
+    if (d->daysBetweenDate(d->getLiteral(), d->getNow()) <= 3650) {
+      type = e_type::enfant;
+      std::cout << "As a children you must provide the ID from one of your parent. \n> ";
       std::getline(std::cin, cmd);
+      while (b->validId(std::stoi(cmd)) == false) {
+	std::cout << "The ID doesn't exist, please enter a valid ID. \n> ";
+	std::getline(std::cin, cmd);
+      }
+      parentId = std::stoi(cmd);
     }
-    parentId = std::stoi(cmd);
-    std::cout << "Parent Id : " << parentId << std::endl;
-  }
-  else
-    type = e_type::classic;
-  if (isDateValid(date) == true) { //TODO add verification lastname & firstname
+    else
+      type = e_type::classic;
     b->dynamicallyCreateClient(new Date(date), lastname, firstname, type, parentId);
   }
 }
@@ -91,6 +125,7 @@ void create(std::string s, Bank *b) {
 void help(std::string s, Bank *b) {
   (void)s;
   std::cout << "quit will terminate the program and save all the information in the .csv" << std::endl;
+  std::cout << "create will allow you to create a freshly new account" << std::endl;
   (void)b;
 }
 
@@ -108,7 +143,6 @@ int	main(int argc, char **argv) {
   (void)argc;
   (void)argv;
   Bank *b = new Bank("banque.csv");
-  (void)b;  
 
   typedef void (*DoIt)(std::string, Bank *);
   typedef std::map<std::string, DoIt> MapCall;

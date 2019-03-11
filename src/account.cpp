@@ -87,6 +87,12 @@ void		Account::setType(e_type newType) {
   this->_accountType = newType;
 }
 
+void		Account::showHistory(void) {
+  for (auto record : this->_history) {
+    record->dump();
+  }
+}
+
 void		Account::addRecordToHistory(Record *newRecord) {
   this->_history.push_back(newRecord);
 }

@@ -57,11 +57,27 @@ void			Bank::dynamicallyCreateClient(Date *birthdate, std::string lastname, std:
     addClient(new Children(newId, birthdate, lastname, firstname, 0.0, parentId, e_type::enfant));
   else
     addClient(new Account(newId, birthdate, lastname, firstname, 0.0, e_type::classic));
-  (void)birthdate;
-  (void)lastname;
-  (void)firstname;
-  (void)type;
-  (void)parentId;
+  for (auto c : this->_clients) {
+    std::cout << "Id : " << c->getId() << std::endl;
+  }
+}
+
+void			Bank::showAll(void) {
+  for (auto client : this->_clients) {
+    std::cout << client->getId() << ": " << client->getLastname() << " " << client->getFirstname()  << std::endl;
+    client->showHistory();
+    std::cout << std::endl;
+  }
+}
+
+void			Bank::showSpecific(int id) {
+  for (auto client : this->_clients) {
+    if (id == client->getId()) {
+      std::cout << client->getId() << ": " << client->getLastname() << " " << client->getFirstname()  << std::endl;
+      client->showHistory();
+      std::cout << std::endl;
+    }
+  }
 }
 
 int			Bank::nonUsedId(std::vector<Account *> clients) {
