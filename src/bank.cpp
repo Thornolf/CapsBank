@@ -1,8 +1,17 @@
 #include		<fstream>
 #include		<iostream>
+#include		<iomanip>
 
 #include		"exceptionHandler.hpp"
 #include		"bank.hpp"
+
+static	std::string	roundDouble(double nbr) {
+  std::ostringstream round;
+  round << std::fixed;
+  round << std::setprecision(2);
+  round << nbr;
+  return (round.str());
+}
 
 Bank::Bank(std::string	newDatabaseLocation) {
   this->_databaseLocation = newDatabaseLocation;
@@ -122,10 +131,12 @@ void			Bank::save(std::string locationFile) {
       s += std::to_string(client->getId());
       s += ",R," + client->getLastname() + "," + client->getFirstname() + ",";
       s +=  client->getBirthdate()->getLiteral() + ",,";
-      s += std::to_string(client->getBalance());
+      s += roundDouble(client->getBalance());
+      //      s += std::to_string(client->getBalance());
       for (auto h : client->getHistory()) {
 	s += "," + h->getDate()->getLiteral() + ",";
-	s += std::to_string(h->getBalance());
+	s += roundDouble(h->getBalance());
+	//	s += std::to_string(h->getBalance());
       }
       s += "\n";
     } else if (client->getType() == e_type::enfant) {
@@ -134,20 +145,26 @@ void			Bank::save(std::string locationFile) {
       s += ",E," + client->getLastname() + "," + client->getFirstname() + ",";
       s +=  client->getBirthdate()->getLiteral() + ",";
       s += std::to_string(dynamic_cast<Children *>(client)->getParentId()) + ",";
-      s += std::to_string(client->getBalance());
+      s += roundDouble(client->getBalance());
+      //      s += std::to_string(client->getBalance());
+      
       for (auto h : client->getHistory()) {
 	s += "," + h->getDate()->getLiteral() + ",";
-	s += std::to_string(h->getBalance());
+	s += roundDouble(h->getBalance());
+	//	s += std::to_string(h->getBalance());
       }
       s += "\n";
     } else {
       s += std::to_string(client->getId());
       s += ",A," + client->getLastname() + "," + client->getFirstname() + ",";
       s +=  client->getBirthdate()->getLiteral() + ",,";
-      s += std::to_string(client->getBalance());
+      s += roundDouble(client->getBalance());
+      
+      //      s += std::to_string(client->getBalance());
       for (auto h : client->getHistory()) {
 	s += "," + h->getDate()->getLiteral() + ",";
-	s += std::to_string(h->getBalance());
+	s += roundDouble(h->getBalance());
+	//	s += std::to_string(h->getBalance());
       }
       s += "\n";
     }
