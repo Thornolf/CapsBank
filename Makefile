@@ -11,7 +11,7 @@ CXXFLAGS				=	-W -Wall -Wextra -Werror -I./inc/
 DEBUG					?=	no
 
 ifeq					($(DEBUG), yes)
-CFLAGS				=	-g -ggdb3
+CFLAGS				=	-g -ggdb3 -Wfatal-errors
 CXXFLAGS			+=	-g -ggdb3
 endif
 

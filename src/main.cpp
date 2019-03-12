@@ -17,13 +17,13 @@ bool            isDateValid(std::string predicat) {
   int				month = 0;
   int				day = 0;
   int				count = 0;
-  
+
+  std::string::const_iterator it = predicat.begin();
+  while (++it != predicat.end())
+    if ((*it < '0' || *it >'9') && (*it != '-'))
+      throw ExceptionHandler("Not a valid date.");
   while ((pos = predicat.find(delimiter)) != std::string::npos) {
     token = predicat.substr(0, pos);
-
-    if (predicat.find_first_not_of("0123456789") == std::string::npos) {
-	return (false);
-    }
     data.push_back(token);
     predicat.erase(0, pos + delimiter.length());
     count++;
@@ -76,7 +76,7 @@ void withdraw(std::string s, Bank *b) {
     std::cout << "Enter the ID of the account you want to withdraw from.\n> ";
     std::getline(std::cin, cmd);
     if (b->validId(cmd) == false) {
-      throw ExceptionHandler("The account doesn't exist.\n");
+      throw ExceptionHandler("The account doesn't exist.");
     }
     id = std::stoi(cmd);
     std::cout << "How much do you want to withraw from this account ?\n> ";
@@ -93,7 +93,7 @@ void withdraw(std::string s, Bank *b) {
 	    client->withdraw(amount);
 	}
       }
-    }    
+    }   
   } catch (ExceptionHandler &e) {
     std::cerr << "Error: " << e.what() << std::endl;
     return;
@@ -135,34 +135,43 @@ void create(std::string s, Bank *b) {
   std::string	firstname;
   std::string	lastname;
   std::string	cmd;
+  Date		*d;
   int		parentId = 0;
   e_type	type;
   
   (void)s;
-  std::cout << "What is the birthdate of the new user (Format YYYY-(M)M-DD) ?\n> ";
-  std::getline(std::cin, cmd);
-  date = cmd; 
-  std::cout << "What is the lastname of the new user ?\n> ";
-  std::getline(std::cin, cmd);
-  lastname = cmd;
-  std::cout << "What is the firstname of the new user ?\n> ";
-  std::getline(std::cin, cmd);
-  firstname = cmd;
-  if (isDateValid(date) == true) { //TODO add verification lastname & firstname // Throw si date invalide
-    Date *d = new Date(date);
-    if (d->daysBetweenDate(d->getLiteral(), d->getNow()) <= 3650) {
-      type = e_type::enfant;
-      std::cout << "As a children you must provide the ID from one of your parent. \n> ";
-      std::getline(std::cin, cmd);
-      while (b->validId(cmd) == false) {
-	std::cout << "The ID doesn't exist, please enter a valid ID. \n> ";
-	std::getline(std::cin, cmd);
-      }
-      parentId = std::stoi(cmd);
+  try {
+    std::cout << "What is the birthdate of the new user (Format YYYY-(M)M-DD) ?\n> ";
+    std::getline(std::cin, cmd);
+    date = cmd;
+    if (isDateValid(date) == true) {
+      d = new Date(date);
     }
-    else
-      type = e_type::classic;
-    b->dynamicallyCreateClient(new Date(date), lastname, firstname, type, parentId);
+    std::cout << "What is the lastname of the new user ?\n> ";
+    std::getline(std::cin, cmd);
+    lastname = cmd;
+    std::cout << "What is the firstname of the new user ?\n> ";
+    std::getline(std::cin, cmd);
+    firstname = cmd;
+    //if (isDateValid(date) == true) { //TODO add verification lastname & firstname // Throw si date invalide
+    // Date *d = new Date(date);
+      if (d->daysBetweenDate(d->getLiteral(), d->getNow()) <= 3650) {
+	type = e_type::enfant;
+	std::cout << "As a children you must provide the ID from one of your parent. \n> ";
+	std::getline(std::cin, cmd);
+	while (b->validId(cmd) == false) {
+	  std::cout << "The ID doesn't exist, please enter a valid ID. \n> ";
+	  std::getline(std::cin, cmd);
+	}
+	parentId = std::stoi(cmd);
+      }
+      else
+	type = e_type::classic;
+      b->dynamicallyCreateClient(new Date(date), lastname, firstname, type, parentId);
+      //}
+  } catch (ExceptionHandler &e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+    return;
   }
 }
 
@@ -189,22 +198,22 @@ int	main(int argc, char **argv) {
   Bank *b = new Bank("banque.csv");
 
   typedef void (*DoIt)(std::string, Bank *);
-  typedef std::map<std::string, DoIt> MapCall;
-  MapCall	doit;
-  doit.insert(MapCall::value_type("show", show));
-  doit.insert(MapCall::value_type("withdraw", withdraw));
-  doit.insert(MapCall::value_type("deposit", deposit));
-  doit.insert(MapCall::value_type("create", create));
-  doit.insert(MapCall::value_type("help", help));
-  doit.insert(MapCall::value_type("quit", quit));
+  typedef std::map<std::string, DoIt> ListeCommand;
+  ListeCommand			      command;
+  command.insert(ListeCommand::value_type("show", show));
+  command.insert(ListeCommand::value_type("withdraw", withdraw));
+  command.insert(ListeCommand::value_type("deposit", deposit));
+  command.insert(ListeCommand::value_type("create", create));
+  command.insert(ListeCommand::value_type("help", help));
+  command.insert(ListeCommand::value_type("quit", quit));
   std::string cmd;
   std::cout << "> ";
   while (cmd != "exit" && cmd != "quit") {
     std::getline(std::cin, cmd);
     
-    MapCall::const_iterator call;
-    call = doit.find(cmd);
-    if (call != doit.end()) {
+    ListeCommand::const_iterator call;
+    call = command.find(cmd);
+    if (call != command.end()) {
       (*call).second(cmd, b);
     }
     else {

@@ -75,7 +75,7 @@ void			Bank::dynamicallyCreateClient(Date *birthdate, std::string lastname, std:
 void			Bank::showAll(void) {
   for (auto client : this->_clients) {
     std::cout << "["<< client->getId() << "] " << client->getLastname() << " " << client->getFirstname();
-    std::cout << " : " << std::to_string(client->getBalance()) << " $ " << std::endl;
+    std::cout << " : " << roundDouble(client->getBalance()) << " $ " << std::endl;
     std::cout << std::endl;
   }
 }
@@ -84,7 +84,7 @@ void			Bank::showSpecific(int id) {
   for (auto client : this->_clients) {
     if (id == client->getId()) {
       std::cout << "["<< client->getId() << "] " << client->getLastname() << " " << client->getFirstname();
-      std::cout << " : " << std::to_string(client->getBalance()) << " $ " << std::endl;
+      std::cout << " : " << roundDouble(client->getBalance()) << " $ " << std::endl;
       std::cout << std::endl;
     }
   }
@@ -132,11 +132,9 @@ void			Bank::save(std::string locationFile) {
       s += ",R," + client->getLastname() + "," + client->getFirstname() + ",";
       s +=  client->getBirthdate()->getLiteral() + ",,";
       s += roundDouble(client->getBalance());
-      //      s += std::to_string(client->getBalance());
       for (auto h : client->getHistory()) {
 	s += "," + h->getDate()->getLiteral() + ",";
 	s += roundDouble(h->getBalance());
-	//	s += std::to_string(h->getBalance());
       }
       s += "\n";
     } else if (client->getType() == e_type::enfant) {
@@ -146,12 +144,10 @@ void			Bank::save(std::string locationFile) {
       s +=  client->getBirthdate()->getLiteral() + ",";
       s += std::to_string(dynamic_cast<Children *>(client)->getParentId()) + ",";
       s += roundDouble(client->getBalance());
-      //      s += std::to_string(client->getBalance());
       
       for (auto h : client->getHistory()) {
 	s += "," + h->getDate()->getLiteral() + ",";
 	s += roundDouble(h->getBalance());
-	//	s += std::to_string(h->getBalance());
       }
       s += "\n";
     } else {
@@ -159,12 +155,9 @@ void			Bank::save(std::string locationFile) {
       s += ",A," + client->getLastname() + "," + client->getFirstname() + ",";
       s +=  client->getBirthdate()->getLiteral() + ",,";
       s += roundDouble(client->getBalance());
-      
-      //      s += std::to_string(client->getBalance());
       for (auto h : client->getHistory()) {
 	s += "," + h->getDate()->getLiteral() + ",";
 	s += roundDouble(h->getBalance());
-	//	s += std::to_string(h->getBalance());
       }
       s += "\n";
     }
@@ -206,8 +199,14 @@ void			Bank::load(std::string locationFile) {
 bool		Bank::isDigit(const std::string& string) const
 {
     std::string::const_iterator it = string.begin();
-    while (it != string.end() && std::isdigit(*it))
-      ++it;
+    while (it != string.end())
+      {
+	if ((*it < '0' || *it >'9') && (*it != '.'))
+	  {
+	    throw ExceptionHandler("Not a number.");
+	  }
+	++it;
+      }
     return !string.empty() && it == string.end();
 }
 
