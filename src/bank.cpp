@@ -67,9 +67,6 @@ void			Bank::dynamicallyCreateClient(Date *birthdate, std::string lastname, std:
     addClient(new Children(newId, birthdate, lastname, firstname, 0.0, parentId, e_type::enfant));
   else
     addClient(new Account(newId, birthdate, lastname, firstname, 0.0, e_type::classic));
-  for (auto c : this->_clients) {
-    std::cout << "Id : " << c->getId() << std::endl;
-  }
 }
 
 void			Bank::showAll(void) {
@@ -202,9 +199,7 @@ bool		Bank::isDigit(const std::string& string) const
     while (it != string.end())
       {
 	if ((*it < '0' || *it >'9') && (*it != '.'))
-	  {
-	    throw ExceptionHandler("Not a number.");
-	  }
+	  throw ExceptionHandler("Not a number.");
 	++it;
       }
     return !string.empty() && it == string.end();

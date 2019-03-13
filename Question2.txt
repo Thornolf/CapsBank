@@ -1,0 +1,19 @@
+A  la  lumiére  du  précédent  exercice,  expliquez  comment  vous  remplaceriez  la
+hiérarchie de classe de comptes que vous avez coņçue par une seule classe paramétrisée
+(sans l’implémenter, mais donnez un squelette de la classe suffisant pour la spécifier).
+Comparez les deux solutions.
+La quelle vous paraît plus adéquate(clarté, facilité de maintenance, etc.).Pourquoi ?
+
+Les seules fonctions paramétrisées seraient ceux qui servent à retirer,
+rajouter de l'argent ainsi qu'à créer un compte.
+
+template <class T>
+class Account {
+ private:
+    // Elle comporterait les mêmes attributs que les classes classiques.
+  public:
+        // Les méthodes withdraw, deposit et create serait eux différentes selon le type d’instanciation
+};
+
+La hiérarchie de classe de compte semble bien plus simple à maintenir et beaucoup plus
+claire même si l'utilisation de fonction template est petinente pour par exemple la gestion des comptes.
