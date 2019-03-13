@@ -1,14 +1,14 @@
-#include	<iostream>
-#include	<fstream>
-#include	<map>
+#include			<iostream>
+#include			<fstream>
+#include			<map>
 
-#include	"date.hpp"
-#include	"account.hpp"
-#include	"children.hpp"
-#include	"bank.hpp"
-#include	"exceptionHandler.hpp"
+#include			"date.hpp"
+#include			"account.hpp"
+#include			"children.hpp"
+#include			"bank.hpp"
+#include			"exceptionHandler.hpp"
 
-static bool		isDateValid(std::string predicat) {
+static bool			isDateValid(std::string predicat) {
   std::vector<std::string>	data;
   std::string			delimiter = "-";
   std::string			token;
@@ -37,7 +37,7 @@ static bool		isDateValid(std::string predicat) {
     return (false);
 }
 
-static bool		isNamesValid(std::string predicat) {
+static bool			isNamesValid(std::string predicat) {
   std::string::const_iterator it = predicat.begin();
   while (++it != predicat.end())
     if ((*it < 'a' || *it >'z') && (*it != '-') && (*it < 'A' || *it >'Z'))
@@ -45,9 +45,9 @@ static bool		isNamesValid(std::string predicat) {
   return (true);
 }
 
-static void		show(Bank *b) {
-  bool			valid = false;
-  std::string		cmd;
+static void			show(Bank *b) {
+  bool				valid = false;
+  std::string			cmd;
   
   try {
     std::cout << "Which account do you want to see ? (Give an ID or type all to see all accounts)\n->";
@@ -74,10 +74,10 @@ static void		show(Bank *b) {
   }
 }
 
-static void		withdraw(Bank *b) {
-  std::string		cmd;
-  int			id;
-  double		amount = 0;
+static void			withdraw(Bank *b) {
+  std::string			cmd;
+  int				id;
+  double			amount = 0;
   
   try {
     std::cout << "Enter the ID of the account you want to withdraw from.\n->";
@@ -107,10 +107,10 @@ static void		withdraw(Bank *b) {
   }
 }
 
-static void		deposit(Bank *b) {
-  std::string		cmd;
-  int			id;
-  double		amount = 0;
+static void			deposit(Bank *b) {
+  std::string			cmd;
+  int				id;
+  double			amount = 0;
   
   try {
     std::cout << "Enter the ID of the account you want to deposit on.\n-> ";
@@ -135,14 +135,14 @@ static void		deposit(Bank *b) {
   }
 }
 
-static void		create(Bank *b) {
-  std::string		date;
-  std::string		firstname;
-  std::string		lastname;
-  std::string		cmd;
-  Date			*d;
-  int			parentId = 0;
-  e_type		type;
+static void			create(Bank *b) {
+  std::string			date;
+  std::string			firstname;
+  std::string			lastname;
+  std::string			cmd;
+  Date				*d;
+  int				parentId = 0;
+  e_type			type;
   
   try {
     std::cout << "What is the birthdate of the new user (Format YYYY-(M)M-DD) ?\n-> ";
@@ -178,7 +178,7 @@ static void		create(Bank *b) {
   }
 }
 
-static void		help(Bank *b) {
+static void			help(Bank *b) {
   std::cout << "show\t: type all or a valid ID to see an account." << std::endl;
   std::cout << "withdraw: take money from an account by selecting a valid ID and an amount." << std::endl;
   std::cout << "deposit\t: put money into an account by selecting a valid ID and an amount." << std::endl;
@@ -188,20 +188,21 @@ static void		help(Bank *b) {
   (void)b;
 }
 
-static void		quit(Bank *b) {
+static void			quit(Bank *b) {
   b->save(b->getDatabaseLocation());
   exit(1);
 }
 
-int			main(void) {
+int				main(void) {
   Bank *b = new Bank("banque.csv");
   typedef void (*func)(Bank *);
   typedef std::map<std::string, func> ListeCommand;
-  ListeCommand			      command;
-  std::string			      cmd;
+  ListeCommand			command;
+  std::string			cmd;
 
-  std::cout << "\t\t--- Welcome to the CapsBank, best bank in the Wasteland ! ---\n" << std::endl;
+  std::cout << "\t\t--- Welcome to the CapsBank, best bank into the Wasteland ! ---\n" << std::endl;
   std::cout << "\t\tThis program was made by Remi GIACOMETTI & Quentin BAUDET\n" << std::endl;
+  std::cout << "You need to type a command and then proceed with other informations." << std::endl;
   help(b);
   command.insert(ListeCommand::value_type("show", show));
   command.insert(ListeCommand::value_type("withdraw", withdraw));
@@ -213,10 +214,10 @@ int			main(void) {
   while (cmd != "exit" && cmd != "quit") {
     std::getline(std::cin, cmd);
     
-    ListeCommand::const_iterator	call;
-    call = command.find(cmd);
-    if (call != command.end()) {
-      (*call).second(b);
+    ListeCommand::const_iterator commandIterator;
+    commandIterator = command.find(cmd);
+    if (commandIterator != command.end()) {
+      (*commandIterator).second(b);
     }
     else {
       std::cout << "Unknown command, type help to get the command list." << std::endl;
