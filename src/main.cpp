@@ -211,7 +211,7 @@ int				main(void) {
   command.insert(ListeCommand::value_type("help", help));
   command.insert(ListeCommand::value_type("quit", quit));
   std::cout << "\n> ";
-  while (cmd != "exit" && cmd != "quit") {
+  while (cmd != "quit") {
     std::getline(std::cin, cmd);
     
     ListeCommand::const_iterator commandIterator;
