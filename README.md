@@ -22,4 +22,4 @@ You need to type one of the command which follow and then proceed with other inf
 
 ## Contact
 
-If you have any problem please contact me at thornolf@amazin.is
+If you have any problem please contact me at thornolf@caps-bank.fi
